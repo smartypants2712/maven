@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.mycompany</groupId>
+    <artifactId>myapp</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>${project.artifactId}</name>
+    <properties>
+        <rpm.install.basedir>/home/tomcat/container_name</rpm.install.basedir>
+        <rpm.install.webapps>${rpm.install.basedir}/webapps</rpm.install.webapps>
+        <rpm.install.config>${rpm.install.basedir}/lib</rpm.install.config>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>rpm</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <copyright>My Company</copyright>
+                    <distribution>My Distribution</distribution>
+                    <group>Applications/Internet</group>
+                    <packager>tomcat</packager>
+                    <changelogFile>CHANGELOG</changelogFile>
+                    <defaultDirmode>500</defaultDirmode>
+                    <defaultFilemode>400</defaultFilemode>
+                    <defaultUsername>tomcat</defaultUsername>
+                    <defaultGroupname>tomcat</defaultGroupname>
+                    <mappings>
+                        <!-- web app 1 (module #1) -->
+                        <mapping>
+                            <directory>${rpm.install.webapps}</directory>
+                            <sources>
+                                <source>
+                                    <location>wars</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <!-- web app 2 (module #2)
+                        <mapping>
+                            <directory>${rpm.install.webapps}/myWebApp2</directory>
+                            <sources>
+                                <source>
+                                    <location>../path-to/myWebApp2/target/unified-browser-widget</location>
+                                </source>
+                            </sources>
+                        </mapping> -->
+
+                        <!--  web app 3 (module #3)
+                        <mapping>
+                            <directory>${rpm.install.webapps}/myWebApp3</directory>
+                            <sources>
+                                <source>
+                                    <location>../path-to/myWebApp3/target/report-services</location>
+                                </source>
+                            </sources>
+                        </mapping> -->
+                    </mappings>
+                    <postinstallScriptlet>
+                        <script>echo "WARNING: You may need to restart tomcat to ensure changes take effect."</script>
+                    </postinstallScriptlet>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
